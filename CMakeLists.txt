@@ -84,6 +84,13 @@ endif()
 if (QUICKJS_BUILD_TEST)
     add_executable(run-test262 run-test262.c)
     target_link_libraries(run-test262 PRIVATE quickjs-libc)
+
+    add_custom_command(TARGET run-test262 PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/test262.conf ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/test262o.conf ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/test262_errors.txt ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/test262o_errors.txt ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/test262 ${CMAKE_CURRENT_BINARY_DIR}/test262)
 endif()
 
 # a bug of clang-cl
